@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 
 module.exports.home = function (req, res) {
   return res.render("home", {
@@ -45,6 +46,25 @@ module.exports.login = function (req, res) {
     title: "Sign In Page",
   });
 };
+
+module.exports.createSession = async function(req, res) {
+    try {
+        let user = await User.findOne({email: req.body.email});
+        const checkPassword = bcrypt.compareSync(req.body.password, user.password);
+        if (!user || !checkPassword){
+            console.log('Invalid Username or Password');
+            return res.redirect('back')
+        }
+        else{
+            let token = jwt.sign(user.toJSON(), 'authentication', {expiresIn: '100000'})
+            console.log(token);
+            return res.redirect('/profile');
+        }
+    }catch(err) {
+        console.log(err);
+        return res.redirect('back')
+    }
+}
 
 module.exports.profile = function (req, res) {
   return res.render("profile");
