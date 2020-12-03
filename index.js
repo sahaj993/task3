@@ -3,6 +3,9 @@ const app = express();
 const port = 9000;
 const db = require('./config/mongoose');
 
+// For all the post requests
+app.use(express.urlencoded({extended: true}));
+
 app.set('view engine', 'ejs');
 app.set('views', './view');
 

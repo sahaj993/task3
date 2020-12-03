@@ -5,6 +5,7 @@ const homeController = require('../controller/home_controller');
 
 router.get('/', homeController.home);
 router.get('/register', homeController.register);
+router.post('/create', homeController.create);
 router.get('/login', homeController.login);
 router.get('/profile', homeController.profile);
 
